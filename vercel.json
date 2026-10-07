@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py/$1"
+    }
+  ],
+  "env": {
+    "ENVIRONMENT": "production"
+  }
+}

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  # System 1: Laya Model Docker Server (Hugging Face Spaces emulation)
+  laya-spaces:
+    build:
+      context: ./hf_space
+      dockerfile: Dockerfile
+    container_name: laya-system1-server
+    restart: unless-stopped
+    ports:
+      - "7860:7860"
+    environment:
+      - PORT=7860
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # FastAPI + Ticketing System (Vercel Serverless / Docker container)
+  dispatcher-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: support-dispatcher-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=Smart Support Dispatcher
+      - ENVIRONMENT=production
+      - LAYA_REMOTE_URL=http://laya-spaces:7860
+      - LAYA_REMOTE_TIMEOUT_SECONDS=3.0
+      - LAYA_MIN_CONFIDENCE=0.85
+      - GEMINI_MODEL=gemini-2.5-flash
+    depends_on:
+      laya-spaces:
+        condition: service_healthy

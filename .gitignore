@@ -1,0 +1,37 @@
+# Virtual environments & dependencies
+.venv/
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Caches & Bytecode
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local Environment & Secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Deployment caches
+.vercel/
+
+# Data
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+
+# OS & Editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
